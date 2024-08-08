@@ -1,0 +1,27 @@
+class {{ name }} {
+  {% for prop in properties %}
+  {% if prop.type == 'string' %}String{% elif prop.type == 'number' %}double{% else %}dynamic{% endif %} {{ prop.name }};
+  {% endfor %}
+
+  {{ name }}({
+    {% for prop in properties %}
+    required this.{{ prop.name }},
+    {% endfor %}
+  });
+
+  factory {{ name }}.fromJson(Map<String, dynamic> json) {
+    return {{ name }}(
+      {% for prop in properties %}
+      {{ prop.name }}: json['{{ prop.name }}'],
+      {% endfor %}
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      {% for prop in properties %}
+      '{{ prop.name }}': {{ prop.name }},
+      {% endfor %}
+    };
+  }
+}

@@ -1,0 +1,28 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:app/{{ name | lower }}.model.dart';
+
+class {{ name }}Service {
+  final String baseUrl = 'http://10.0.2.2:3000';
+
+  Future<List<{{ name }}>> getAll() async {
+    final response = await http.get(Uri.parse('$baseUrl/{{ name | lower }}s'));
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      return jsonResponse.map((data) => {{ name }}.fromJson(data)).toList();
+    } else {
+      throw Exception('Failed to load {{ name | lower }}s');
+    }
+  }
+
+  Future<{{ name }}> getById(String id) async {
+    final response = await http.get(Uri.parse('$baseUrl/{{ name | lower }}s/$id'));
+    if (response.statusCode == 200) {
+      return {{ name }}.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load {{ name | lower }}');
+    }
+  }
+
+  // Diğer CRUD operasyonları buraya eklenebilir
+}

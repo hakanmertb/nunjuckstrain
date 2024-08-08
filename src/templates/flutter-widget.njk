@@ -1,0 +1,38 @@
+import 'package:flutter/material.dart';
+import 'package:app/{{ name | lower }}.service.dart';
+
+class {{ name }}ListView extends StatefulWidget {
+  const {{ name }}ListView({super.key});
+  @override
+  State<{{ name }}ListView> createState() => _{{ name }}ListViewState();
+}
+
+class _{{ name }}ListViewState extends State<{{ name }}ListView> {
+  final {{ name }}Service _service = {{ name }}Service();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('{{ name }} List')),
+      body: FutureBuilder(
+          future: _service.getAll(),
+          builder: (context, snapshot) {
+           if (!snapshot.hasData || snapshot.data == null) {
+              return const Center(child:CircularProgressIndicator());
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                final {{ name | lower }} = snapshot.data![index];
+                return ListTile(
+                  title: Text({{ name | lower }}.name),
+                  trailing: Text({{ name | lower }}.price.toString()),
+                  // Diğer özellikler buraya eklenebilir
+                );
+              },
+            );
+          }),
+    );
+  }
+}
+
